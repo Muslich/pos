@@ -19,8 +19,14 @@ public class TransaksiParkir {
     @Column(name = "dateout")
     private Date dateout;
 
+    @Column(name = "resultdate")
+    private Date resultdate;
+
     @Column(name = "harga")
     private double harga;
+
+    @Column(name = "totalHour")
+    private long totalHour;
 
 
     @ManyToOne
@@ -74,6 +80,22 @@ public class TransaksiParkir {
 
     public void setItemParkir(ItemParkir itemParkir) {
         this.itemParkir = itemParkir;
+    }
+
+    public Date getResultdate() {
+        return resultdate;
+    }
+
+    public void setResultdate(Date resultdate) {
+        this.resultdate = resultdate;
+    }
+
+    public long getTotalHour() {
+        return totalHour;
+    }
+
+    public void setTotalHour(long totalHour) {
+        this.totalHour = totalHour;
     }
 }
 

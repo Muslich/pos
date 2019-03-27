@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -24,6 +25,23 @@ public class ItemParkirController {
     public ResponseEntity<List<ItemParkir>>getItemParkir(){
         List<ItemParkir> itemParkirs = itemParkirService.findAll();
         return new ResponseEntity(itemParkirs, HttpStatus.OK);
+
+    }
+    @ResponseBody
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    public ResponseEntity<List<ItemParkir>>createItemParkir(HttpServletRequest httpServletRequest){
+        String namaKendaraan = httpServletRequest.getParameter("namakendaraan");
+        double tarif = Double.parseDouble(httpServletRequest.getParameter("tarif"));
+        double tarifTambahan = Double.parseDouble(httpServletRequest.getParameter("tariftambahan"));
+        try {
+            ItemParkir itemParkir = itemParkirService.createItemParkir(namaKendaraan,tarif,tarifTambahan);
+            return new ResponseEntity(itemParkir,HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity(e.getMessage(),HttpStatus.BAD_REQUEST);
+
+        }
+
+
 
     }
 }
