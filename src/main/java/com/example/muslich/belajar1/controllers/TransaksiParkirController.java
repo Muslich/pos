@@ -4,6 +4,7 @@ import com.example.muslich.belajar1.model.ItemParkir;
 import com.example.muslich.belajar1.model.TransaksiParkir;
 import com.example.muslich.belajar1.service.ItemParkirService;
 import com.example.muslich.belajar1.service.TransaksiParkirService;
+import com.example.muslich.belajar1.vo.ReportVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -57,6 +58,16 @@ public class TransaksiParkirController {
         }catch (Exception e){
             return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
+
     }
+    @ResponseBody
+    @RequestMapping(value = "/report", method = RequestMethod.GET)
+    public ResponseEntity<List<ReportVo>>getreportVos() {
+        List<ReportVo> transaksiParkirReport = transaksiParkirService.transaksiParkirReport();
+        return new ResponseEntity(transaksiParkirReport, HttpStatus.OK);
+
+    }
+
+
 
 }

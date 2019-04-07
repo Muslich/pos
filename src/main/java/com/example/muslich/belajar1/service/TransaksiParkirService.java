@@ -5,14 +5,14 @@ import com.example.muslich.belajar1.model.ItemParkir;
 import com.example.muslich.belajar1.model.TransaksiParkir;
 import com.example.muslich.belajar1.repository.ItemParkirRepository;
 import com.example.muslich.belajar1.repository.TransaksiParkirRepository;
+import com.example.muslich.belajar1.vo.ReportVo;
+import com.sun.org.apache.bcel.internal.generic.Select;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Period;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class TransaksiParkirService {
@@ -114,5 +114,42 @@ public class TransaksiParkirService {
 
         return itemparkirs;
     }
+
+    public List<ReportVo>transaksiParkirReport(){
+        List<TransaksiParkir> transaksiParkirList = transaksiParkirRepository.findAll();
+        List<ReportVo> reportVos = new ArrayList<>();
+        Map<String, ReportVo> map = new HashMap();
+        for(int i = 0; i < transaksiParkirList.size(); i++){
+            TransaksiParkir parkir = transaksiParkirList.get(i);
+            ReportVo vo = map.get(parkir.getItemParkir().getNamaKendaraan());
+            if(vo == null){
+                vo = new ReportVo();
+                vo.setItemKendaraan(parkir.getItemParkir().getNamaKendaraan());
+                vo.setTotalPendapatan(parkir.getHarga());
+                vo.setTotalParkir(1);
+            }else {
+                vo.setTotalParkir(vo.getTotalParkir()+1);
+                vo.setTotalPendapatan(vo.getTotalPendapatan()+parkir.getHarga());
+            }
+            map.put(parkir.getItemParkir().getNamaKendaraan(), vo);
+        }
+        System.out.println(map);
+        for(Map.Entry<String, ReportVo> entry: map.entrySet()){
+            reportVos.add(entry.getValue());
+        }
+        System.out.println(reportVos);
+
+
+
+
+
+
+
+
+
+
+        return reportVos;
+    }
+
 
 }
